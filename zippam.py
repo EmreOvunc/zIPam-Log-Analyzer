@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 # EmreOvunc - BerkayIpek
-# 27.04.2020
+# 28.04.2020
 
 # pip3 install pandas requests xlrd xlwt
 
@@ -14,7 +14,11 @@ from requests import get
 from datetime import datetime
 
 date = str(datetime.now()).split(' ')[0]
-dirName = date
+time = str(datetime.now()).split(' ')[1].split(":")[0] + "_" +\
+       str(datetime.now()).split(' ')[1].split(":")[1] + "_" +\
+       str(datetime.now()).split(' ')[1].split(":")[2].split('.')[0]
+
+dirName = date + "_" + time
 mkdir(dirName)
 
 try:
@@ -200,7 +204,10 @@ def web(site, parseKey, ip):
                     try:
                         result_ = str(req.content).split(parseKey)[1].split('NetName')[1].split('NetHandle')[0].strip()
                     except:
-                        result_ = str(req.content).split(parseKey)[1].split('<pre>')[1].split('\\n')[0]
+                        try:
+                            result_ = str(req.content).split(parseKey)[1].split('<pre>')[1].split('\\n')[0]
+                        except:
+                            web(site2, parseKey, ip)
             except:
                 error_result.write(str("\n" + ip))
                 result_ = ""
@@ -208,7 +215,6 @@ def web(site, parseKey, ip):
             subnet(req, parseKey, ip, result_)
 
         else:
-            print(req.status_code)
             error_result.write(str("\n" + ip + ":" + req.status_code))
 
 
@@ -242,15 +248,13 @@ def subnet(req, parseKey, ip, result_):
                 minIP = miniIP(networkID)
                 minIP_binary = Int2Bin(networkID)
 
-                print("IP: " + ip)
-
                 while True:
                     maxIP, minIP, result_ = searchList(maxIP, minIP, result_)
                     if maxIP == minIP:
                         break
             except:
                 error_result.write(str(ip + "\n"))
-                print("ERROR: " + ip)
+
         else:
             maxIP, minIP, result_ = searchList(ip, ip, result_)
 
@@ -268,6 +272,7 @@ def searchvalid(minip, result_):
                 file_result.write("\n" + ipList[nb][0] + ":" + result_)
                 file_result.close()
                 result.append((ipList[nb][0], result_))
+                print('Counter:' + str(counter))
                 counter += 1
 
 
@@ -327,7 +332,7 @@ for data in sheet['DestinationIP_1']:
     else:
         web(site2, parse2, ip)
     flag += 1
-    sleep(3)
+    sleep(1)
 
 error_result.close()
 
