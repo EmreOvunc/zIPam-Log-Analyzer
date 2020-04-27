@@ -8,7 +8,7 @@ zIPam helps members to analyze network logs from an excel file. It runs 'whois' 
 ## Roadmap
 + [x] .xlsx parsing
 + [x] GET requests to two whois web apps
-+ [x] Subnet searching added
++ [x] subnet searching added
 + [x] xls and txt output 
 + [x] error output 
 - [ ] API integration for security devices
