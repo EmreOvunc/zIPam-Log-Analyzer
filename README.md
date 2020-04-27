@@ -1,5 +1,5 @@
 # zIPam-Log-Analyzer
-zIPam helps members to analyze network logs from an excel file. It runs 'whois' request to find organizations for blue teams.
+zIPam helps security analyst to analyze network logs from an excel file. It runs 'whois' request to find organizations for blue teams.
 
 [![](https://img.shields.io/github/issues/EmreOvunc/zIPam-Log-Analyzer)](https://github.com/EmreOvunc/zIPam-Log-Analyzer/issues)
 [![](https://img.shields.io/github/stars/EmreOvunc/zIPam-Log-Analyzer)](https://github.com/EmreOvunc/zIPam-Log-Analyzer/stargazers)
