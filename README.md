@@ -14,6 +14,8 @@ zIPam helps members to analyze network logs from an excel file. It runs 'whois' 
 - [ ] API integration for security devices
 - [ ] General log parsing
 
+![](https://emreovunc.com/projects/harry_parser.jpg)
+
 ## Installation
 ```
 git clone https://github.com/EmreOvunc/zIPam-Log-Analyzer.git
@@ -24,5 +26,4 @@ python3 zippam.py
 ```
 
 ## Example Output
-
 ![](https://emreovunc.com/projects/zippam_console.png)
