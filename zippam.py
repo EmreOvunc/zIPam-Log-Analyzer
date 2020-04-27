@@ -10,6 +10,7 @@ from os       import mkdir
 from time     import sleep
 from xlwt     import Workbook
 from pandas   import ExcelFile
+from platform import system as ps
 from requests import get
 from datetime import datetime
 
@@ -33,13 +34,19 @@ try:
     error_resultName = "errors.txt"
     error_result = open(dirName + "/" + error_resultName, 'a')
 except:
-    system("rm -rf " + dirName)
+    if not 'indows' in ps():
+        system("rm -rf " + dirName)
+    else:
+        system("rd /s /q " + dirName)
 
 try:
     excel = ExcelFile(file)
     sheet = excel.parse("Sheet1")
 except:
-    system("rm -rf " + dirName)
+    if not 'indows' in ps():
+        system("rm -rf " + dirName)
+    else:
+        system("rd /s /q " + dirName)
     exit(0)
 
 ipList = []
@@ -345,6 +352,9 @@ for nbr in range(0, len(result)):
 
 workbook.save(dirName + '/results.xls')
 
-system("rm -rf ~" + file)
+if not 'indows' in ps():
+    system("rm -rf " + file)
+else:
+    system("rd /s /q " + file)
 
 exit()
