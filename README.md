@@ -11,3 +11,5 @@ python3 zippam.py
 ```
 
 ## Example Output
+
+![](https://emreovunc.com/projects/zippam_console.png)
