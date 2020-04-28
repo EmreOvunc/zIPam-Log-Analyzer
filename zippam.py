@@ -4,13 +4,13 @@
 
 # pip3 install pandas requests xlrd xlwt
 
-from os       import listdir
-from os       import system
 from os       import mkdir
+from os       import remove
+from os       import listdir
 from time     import sleep
 from xlwt     import Workbook
 from pandas   import ExcelFile
-from platform import system as ps
+from os.path  import exists
 from requests import get
 from datetime import datetime
 
@@ -34,19 +34,14 @@ try:
     error_resultName = "errors.txt"
     error_result = open(dirName + "/" + error_resultName, 'a')
 except:
-    if not 'indows' in ps():
-        system("rm -rf " + dirName)
-    else:
-        system("rd /s /q " + dirName)
+    remove(dirName)
+    exit(0)
 
 try:
     excel = ExcelFile(file)
     sheet = excel.parse("Sheet1")
 except:
-    if not 'indows' in ps():
-        system("rm -rf " + dirName)
-    else:
-        system("rd /s /q " + dirName)
+    remove(dirName)
     exit(0)
 
 ipList = []
@@ -189,6 +184,7 @@ def web(site, parseKey, ip):
     if fl == 0:
         req = get(site + str(ip))
         if req.status_code == 200:
+            runflag = 0
             try:
                 try:
                     try:
@@ -214,12 +210,31 @@ def web(site, parseKey, ip):
                         try:
                             result_ = str(req.content).split(parseKey)[1].split('<pre>')[1].split('\\n')[0]
                         except:
-                            web(site2, parseKey, ip)
+                            try:
+                                result_ = str(req.content).split(parseKey)[1].split('netname')[1].split('descr')[0].split('\\n')[
+                                0].split(':')[1].strip()
+                            except:
+                                if site == site2:
+                                    web(site1, parseKey, ip)
+                                else:
+                                    result_ = "Captcha ERROR"
+                                    error_result.write(str("\n" + result_ + "=" + ip))
+                                    runflag += 1
             except:
                 error_result.write(str("\n" + ip))
                 result_ = ""
+                runflag += 1
 
-            subnet(req, parseKey, ip, result_)
+            if "div" in result_:
+                result_ = 'Parsing ERROR'
+                error_result.write(str("\n" + result_ + "=" + ip))
+                runflag += 1
+
+            try:
+                if runflag == 0:
+                    subnet(req, parseKey, ip, result_)
+            except:
+                subnet(req, parseKey, ip, result_)
 
         else:
             error_result.write(str("\n" + ip + ":" + req.status_code))
@@ -279,7 +294,7 @@ def searchvalid(minip, result_):
                 file_result.write("\n" + ipList[nb][0] + ":" + result_)
                 file_result.close()
                 result.append((ipList[nb][0], result_))
-                print('Counter:' + str(counter))
+                print('Progress:' + str(counter) + "/" + len(ipList))
                 counter += 1
 
 
@@ -330,7 +345,6 @@ def searchList(maxip, minip, result_):
     searchvalid(minip, result_)
     return searchIP(maxip, minip, result_)
 
-
 flag = 0
 for data in sheet['DestinationIP_1']:
     ip = data.strip().split('=')[1]
@@ -339,7 +353,7 @@ for data in sheet['DestinationIP_1']:
     else:
         web(site2, parse2, ip)
     flag += 1
-    sleep(1)
+    sleep(2)
 
 error_result.close()
 
@@ -352,9 +366,7 @@ for nbr in range(0, len(result)):
 
 workbook.save(dirName + '/results.xls')
 
-if not 'indows' in ps():
-    system("rm -rf " + file)
-else:
-    system("rd /s /q " + file)
+if exists("~" + file):
+    remove("~" + file)
 
 exit()
