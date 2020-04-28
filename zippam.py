@@ -275,7 +275,7 @@ def subnet(req, parseKey, ip, result_):
                     if maxIP == minIP:
                         break
             except:
-                error_result.write(str(ip + "\n"))
+                error_result.write(str("\nNetmask ERROR=" + ip))
 
         else:
             maxIP, minIP, result_ = searchList(ip, ip, result_)
@@ -294,7 +294,7 @@ def searchvalid(minip, result_):
                 file_result.write("\n" + ipList[nb][0] + ":" + result_)
                 file_result.close()
                 result.append((ipList[nb][0], result_))
-                print('Progress:' + str(counter) + "/" + len(ipList))
+                print('Progress: ' + str(counter))
                 counter += 1
 
 
