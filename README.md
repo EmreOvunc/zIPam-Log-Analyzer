@@ -21,7 +21,9 @@ zIPam helps security analyst to analyze network logs from an excel file. It runs
 git clone https://github.com/EmreOvunc/zIPam-Log-Analyzer.git
 cd zIPam-Log-Analyzer
 sudo pip3 install virtualenv
+python3 -m venv myvenv
 source myvenv/bin/activate
+pip3 install -r requirements.txt
 python3 zippam.py
 ```
 
