@@ -5,7 +5,7 @@ dnspython==1.16.0
 idna==2.9
 ipwhois==1.1.0
 lxml==4.6.2
-numpy==1.18.3
+numpy==1.22.0
 pandas==1.0.3
 py==1.8.1
 pyshark==0.4.2.9
